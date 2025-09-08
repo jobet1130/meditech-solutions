@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 import path from 'path';
 
+// Enable Turbopack in development
 const nextConfig: NextConfig = {
+  turbopack: {
+    // Add any Turbopack-specific configurations here
+  },
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
@@ -10,7 +14,6 @@ const nextConfig: NextConfig = {
     return config;
   },
   images: {
-    domains: ['localhost', 'images.unsplash.com', 'randomuser.me'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     remotePatterns: [
@@ -26,10 +29,15 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
   reactStrictMode: true,
-  swcMinify: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error'] } : false,
   },
