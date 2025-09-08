@@ -9,6 +9,8 @@ import { ClinicalNotes } from './components/ClinicalNotes';
 import { LabResults } from './components/LabResults';
 import { VitalsWidget } from './components/VitalsWidget';
 import { AppointmentScheduler } from './components/AppointmentScheduler';
+import Link from 'next/link';
+import { Settings } from 'lucide-react';
 
 export default function EHRPage() {
   const patientData = {
@@ -50,6 +52,19 @@ export default function EHRPage() {
       <div className="container mx-auto px-4 py-8">
         {/* Patient Summary Card */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Electronic Health Records</h1>
+              <p className="text-gray-600 mt-2">Viewing record for {patientData.name} (MRN: {patientData.id})</p>
+            </div>
+            <Link 
+              href="/solutions/ehr/practice-management"
+              className="mt-4 md:mt-0 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              <Settings className="h-4 w-4 mr-2" />
+              Practice Management
+            </Link>
+          </div>
           <div className="flex justify-between items-center mb-4">
             <div>
               <h2 className="text-2xl font-bold">{patientData.name}</h2>

@@ -4,7 +4,11 @@ import path from 'path';
 // Enable Turbopack in development
 const nextConfig: NextConfig = {
   turbopack: {
-    // Add any Turbopack-specific configurations here
+    // Enable Turbopack optimizations
+    resolveAlias: {
+      // Add any module aliases here that you want to optimize
+      '@': path.resolve(__dirname, 'src'),
+    },
   },
   webpack: (config) => {
     config.resolve.alias = {
@@ -16,6 +20,7 @@ const nextConfig: NextConfig = {
   images: {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    domains: ['picsum.photos'],
     remotePatterns: [
       {
         protocol: 'https',
