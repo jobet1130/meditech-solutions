@@ -1,6 +1,15 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Remove default margins and ensure full viewport height */
+html, body, #__next {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

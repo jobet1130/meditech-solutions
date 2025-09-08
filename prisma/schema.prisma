@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  firstName String
+  lastName  String
+  role      Role     @default(PATIENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  patient        Patient?
+  doctor         Doctor?
+  appointments   Appointment[]
+  healthRecords  HealthRecord[]
+}
+
+enum Role {
+  ADMIN
+  DOCTOR
+  PATIENT
+  STAFF
+}
+
+model Patient {
+  id            String        @id @default(uuid())
+  userId        String        @unique
+  user          User          @relation(fields: [userId], references: [id])
+  dateOfBirth   DateTime
+  bloodType     String?
+  height        Float?        // in cm
+  weight        Float?        // in kg
+  appointments  Appointment[]
+  healthRecords HealthRecord[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Doctor {
+  id             String        @id @default(uuid())
+  userId         String        @unique
+  user           User          @relation(fields: [userId], references: [id])
+  specialization String
+  licenseNumber  String        @unique
+  bio            String?
+  appointments   Appointment[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Appointment {
+  id          String   @id @default(uuid())
+  patientId   String
+  patient     Patient  @relation(fields: [patientId], references: [id])
+  doctorId    String
+  doctor      Doctor   @relation(fields: [doctorId], references: [id])
+  dateTime    DateTime
+  status      AppointmentStatus @default(SCHEDULED)
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+model HealthRecord {
+  id          String   @id @default(uuid())
+  patientId   String
+  patient     Patient  @relation(fields: [patientId], references: [id])
+  doctorId    String
+  doctor      Doctor   @relation(fields: [doctorId], references: [id])
+  date        DateTime @default(now())
+  diagnosis   String
+  treatment   String
+  notes       String?
+  attachments String[] // URLs to files
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
